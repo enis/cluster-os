@@ -19,10 +19,14 @@ rm -rf /usr/hdp/current/hbase-master/lib/ojdbc6.jar
 
 alias hbase=/usr/hdp/current/hbase-client/bin/hbase
 
-#clean up smoke test table left 
+# clean up smoke test table left 
 echo "disable 'usertable'; drop 'usertable'" | hbase shell
 
-#install git and others
+# install git and others
 apt-get install git python-pip maven python-protobuf
-yum install git python-pip maven python-protobuf
+yum -y install git python-pip maven python-protobuf
 pip install -U pytest
+
+# create Hadoop dirs 
+sudo -u hdfs hadoop fs -mkdir /user/root
+sudo -u hdfs hadoop fs -chown root:root /user/root 
