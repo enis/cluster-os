@@ -2,7 +2,12 @@
 
 source ./env.sh
 
-TARBALL=../hbase-1.0.0
+if [ "$#" -eq "0" ] ; then
+  echo "usage: $0 <tarball_path> "
+  exit
+fi
+
+TARBALL=$1
 
 echo "***********************************"
 echo "deploy hbase from tarball $TARBALL";
