@@ -20,7 +20,7 @@ rm -rf /usr/hdp/current/hbase-master/lib/ojdbc6.jar
 alias hbase=/usr/hdp/current/hbase-client/bin/hbase
 
 # clean up smoke test table left 
-echo "disable 'usertable'; drop 'usertable'" | hbase shell
+#echo "disable 'usertable'; drop 'usertable'" | hbase shell
 
 # install git and others
 apt-get install git python-pip maven python-protobuf
