@@ -24,6 +24,9 @@ deploy() {
   ssh $SSH_ARGS $i "cp $TARGET_DIR/bin/hbase.hdp $TARGET_DIR/bin/hbase" #restore bin/hbase script specific to hdp
   scp $SSH_ARGS -r $TARBALL/hbase-webapps/* $i:$TARGET_DIR/hbase-webapps/
   ssh $SSH_ARGS $i "rm -rf $TARGET_DIR/lib/hadoop-*.jar";
+  ssh $SSH_ARGS $i "chmod 744 $TARGET_DIR/lib/*";
+  ssh $SSH_ARGS $i "chmod 755 $TARGET_DIR/bin/*";
+  ssh $SSH_ARGS $i "chmod 755 $TARGET_DIR/hbase-webapps/*";
 }
 
 for i in `cat $HBASE_CONF_DIR/clients`; do
