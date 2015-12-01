@@ -4,8 +4,8 @@ source ./env.sh
 # first host is the hbase client on HDP deployments
 head -n 1 /tmp/all_internal_nodes >/etc/hbase/conf/clients
 
-# second or third host is the master on HDP deployments
-head -n 3 /tmp/all_internal_nodes | tail -n 1  >/etc/hbase/conf/masters
+# find the hbase master address
+echo zk_dump | hbase shell 2>/dev/null | grep "Active master address" | cut -d ":" -f 2 | cut -d "," -f 1 >/etc/hbase/conf/masters
 
 # get rid of Ranger BS
 sed -i 's/com.xasecure.authorization.hbase.XaSecureAuthorizationCoprocessor//' /etc/hbase/conf/hbase-site.xml 
