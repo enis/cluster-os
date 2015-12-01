@@ -1,4 +1,5 @@
 #!/bin/bash
+source ./env.sh
 
 # first host is the hbase client on HDP deployments
 head -n 1 /tmp/all_internal_nodes >/etc/hbase/conf/clients
@@ -27,6 +28,9 @@ apt-get install git python-pip maven python-protobuf
 yum -y install git python-pip maven python-protobuf
 pip install -U pytest
 
-# create Hadoop dirs 
+# create Hadoop dirs
 sudo -u hdfs hadoop fs -mkdir /user/root
 sudo -u hdfs hadoop fs -chown root:root /user/root 
+
+# remove stupid motd
+pdsh -R exec -w ^/tmp/all_internal_nodes ssh $SSH_ARGS -l %u %h "rm /etc/motd; touch /etc/motd"
