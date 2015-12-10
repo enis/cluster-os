@@ -8,15 +8,16 @@ head -n 1 /tmp/all_internal_nodes >/etc/hbase/conf/clients
 echo zk_dump | hbase shell 2>/dev/null | grep "Active master address" | cut -d ":" -f 2 | cut -d "," -f 1 >/etc/hbase/conf/masters
 
 # get rid of Ranger BS
-sed -i 's/com.xasecure.authorization.hbase.XaSecureAuthorizationCoprocessor//' /etc/hbase/conf/hbase-site.xml 
+sed -i 's/com.xasecure.authorization.hbase.XaSecureAuthorizationCoprocessor//' /etc/hbase/conf/hbase-site.xml
+org.apache.ranger.authorization.hbase.RangerAuthorizationCoprocessor 
 sed -i 's/hbase.rpc.protection/not-set-property/' /etc/hbase/conf/hbase-site.xml 
 sed -i 's/hbase.security.authorization/not-set-property/' /etc/hbase/conf/hbase-site.xml 
 
-rm -rf /etc/hbase/conf/xasecure* 
-rm -rf /etc/hbase/conf/ranger* 
-rm -rf /usr/hdp/current/hbase-master/lib/ranger-* 
-rm -rf /usr/hdp/current/hbase-master/lib/mysql-connector-java.jar
-rm -rf /usr/hdp/current/hbase-master/lib/ojdbc6.jar
+#rm -rf /etc/hbase/conf/xasecure* 
+#rm -rf /etc/hbase/conf/ranger* 
+#rm -rf /usr/hdp/current/hbase-master/lib/ranger-* 
+#rm -rf /usr/hdp/current/hbase-master/lib/mysql-connector-java.jar
+#rm -rf /usr/hdp/current/hbase-master/lib/ojdbc6.jar
 
 alias hbase=/usr/hdp/current/hbase-client/bin/hbase
 
