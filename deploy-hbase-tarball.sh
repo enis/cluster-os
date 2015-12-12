@@ -24,10 +24,10 @@ deploy() {
   pdsh -R exec -w ^$HOSTS_FILE ssh $SSH_ARGS -l %u %h "cp $TARGET_DIR/bin/hbase.hdp $TARGET_DIR/bin/hbase" #restore bin/hbase script specific to hdp
   pdsh -R exec -w ^$HOSTS_FILE scp $SSH_ARGS -r $TARBALL/hbase-webapps/* %h:$TARGET_DIR/hbase-webapps/
   pdsh -R exec -w ^$HOSTS_FILE ssh $SSH_ARGS -l %u %h "rm -rf $TARGET_DIR/lib/hadoop-*.jar";
-  pdsh -R exec -w ^$HOSTS_FILE ssh $SSH_ARGS -l %u %h "chmod 744 $TARGET_DIR/lib/*";
-  pdsh -R exec -w ^$HOSTS_FILE ssh $SSH_ARGS -l %u %h "chmod 755 $TARGET_DIR/bin/*";
-  pdsh -R exec -w ^$HOSTS_FILE ssh $SSH_ARGS -l %u %h "chmod 755 $TARGET_DIR/hbase-webapps/*";
-  pdsh -R exec -w ^$HOSTS_FILE ssh $SSH_ARGS -l %u %h "chmod -R 755 $TARGET_DIR/lib/ruby/";
+  pdsh -R exec -w ^$HOSTS_FILE ssh $SSH_ARGS -l %u %h "chmod 744 $TARGET_DIR/lib/*; chmod 755 $TARGET_DIR/bin/*; chmod 755 $TARGET_DIR/hbase-webapps/*; chmod -R 755 $TARGET_DIR/lib/ruby/";
+
+  # link Phoenix if it is there
+  pdsh -R exec -w ^$HOSTS_FILE ssh $SSH_ARGS -l %u %h "cd /usr/hdp/current/hbase-regionserver/lib/ && ln -s /usr/hdp/current/phoenix-server/phoenix-server.jar phoenix-server.jar"
 }
 
 deploy $HBASE_CONF_DIR/masters $HDP/hbase-master/
