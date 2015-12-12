@@ -15,6 +15,7 @@ copy_hbase_conf() {
   pdsh -R exec -w ^$HOSTS_FILE scp $SSH_ARGS -r /etc/hbase/conf/masters root@%h:/etc/hbase/conf/
   pdsh -R exec -w ^$HOSTS_FILE scp $SSH_ARGS -r /etc/hbase/conf/regionservers root@%h:/etc/hbase/conf/
   pdsh -R exec -w ^$HOSTS_FILE scp $SSH_ARGS -r /etc/hbase/conf/log4j.properties root@%h:/etc/hbase/conf/
+  pdsh -R exec -w ^$HOSTS_FILE scp $SSH_ARGS -r /etc/hbase/conf/hadoop-metrics2-hbase.properties root@%h:/etc/hbase/conf/
 }
 
 #echo "****************************"
