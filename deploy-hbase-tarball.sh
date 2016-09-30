@@ -13,9 +13,17 @@ echo "***********************************"
 echo "deploy hbase from tarball $TARBALL";
 echo "***********************************"
 
+extractTarball() {
+  echo "Extracting tarball $TARBALL"
+  tar zxf $TARBALL
+  TARBALL=`tar tvf $TARBALL | head -n 1  | cut -d ":" -f 2 | cut -d " " -f 2  | cut -d "/" -f 1  `
+}
+
 deploy() {
+  echo "deploying $TARBALL"
   local HOSTS_FILE=$1
   local TARGET_DIR=$2
+  local TARBALL=$3
   pdsh -R exec -w ^$HOSTS_FILE ssh $SSH_ARGS -l %u %h "rm -rf $TARGET_DIR/lib/*";
   pdsh -R exec -w ^$HOSTS_FILE scp $SSH_ARGS -r $TARBALL/lib/* %h:$TARGET_DIR/lib/
   pdsh -R exec -w ^$HOSTS_FILE ssh $SSH_ARGS -l %u %h "cp $TARGET_DIR/bin/hbase $TARGET_DIR/bin/hbase.hdp" #backup bin/hbase script specific to hdp
@@ -30,5 +38,10 @@ deploy() {
   pdsh -R exec -w ^$HOSTS_FILE ssh $SSH_ARGS -l %u %h "cd /usr/hdp/current/hbase-regionserver/lib/ && ln -s /usr/hdp/current/phoenix-server/phoenix-server.jar phoenix-server.jar"
 }
 
-deploy $HBASE_CONF_DIR/masters $HDP/hbase-master/
-deploy $HBASE_CONF_DIR/regionservers $HDP/hbase-regionserver/
+case $TARBALL in
+  *.tar.gz) extractTarball;;
+  *) ;;
+esac 
+
+deploy $HBASE_CONF_DIR/masters $HDP/hbase-master/ $TARBALL
+deploy $HBASE_CONF_DIR/regionservers $HDP/hbase-regionserver/ $TARBALL
